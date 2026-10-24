@@ -1,0 +1,24 @@
+name: Email AGI Briefing
+
+on:
+  push:
+    branches:
+      - daily-ai-updates
+    paths:
+      - 'briefings/agi-briefing-*.md'
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Send briefing email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/send-briefing-email.mjs
